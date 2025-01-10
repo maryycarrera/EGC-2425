@@ -46,3 +46,11 @@ jobs:
         MARIADB_PASSWORD: uvlhub_password
       run: |
         pytest app/modules/ --ignore-glob='*selenium*'
+
+  outdated_dependencies:
+    runs-on: ubuntu-latest
+    needs: pytest
+    steps:
+    - name: Check for outdated dependencies
+      run: |
+        pip list --outdated
