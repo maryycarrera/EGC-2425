@@ -131,3 +131,14 @@ def test_successfull_register(clean_database):
 
     assert UserRepository().count() == 1
     assert UserProfileRepository().count() == 1
+
+
+def test_login_unsuccessful_empty_fields(test_client):
+    response = test_client.post(
+        "/login", data=dict(email="", password=""), follow_redirects=True
+    )
+
+    assert response.request.path == url_for("auth.login"), "Login was unsuccessful"
+    assert b"This field is required" in response.data, response.data
+
+    test_client.get("/logout", follow_redirects=True)
